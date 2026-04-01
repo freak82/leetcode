@@ -1,5 +1,5 @@
 #include "zero_odd_even.hpp"
-#include "formatters.hpp"
+#include "prog_opts.hpp"
 #include "throw.hpp"
 
 // name type
@@ -24,24 +24,14 @@ int main(int argc, char** argv)
         return ret;
     };
     try {
-        // clang-format off
-        bpo::options_description opts("Exercises");
-        opts.add_options()
-            ("help,H", "This help message")
-            ("exercise,E", bpo::value<std::string>(), exercise_names().c_str());
-        // clang-format on
+        bpo::options_description opts("General Options");
+        lcd::add_opt(opts, "help,H", "This help message");
+        lcd::add_opt(opts, "exercise,E", bpo::value<std::string>(),
+                     exercise_names().c_str());
 
-        bpo::variables_map vm;
-        bpo::store(bpo::parse_command_line(argc, argv, opts), vm);
-        bpo::notify(vm);
+        const auto vm = lcd::parse_opts(argc, argv, opts);
 
-        // The separate exercise classes may throw such errors too when
-        // their expected options are not present.
-        if (vm.count("help")) throw opts;
-
-        std::string empty;
-        const auto& vmv      = vm["exercise"];
-        const auto& exercise = vmv.empty() ? empty : vmv.as<std::string>();
+        const auto exercise = lcd::read_opt<std::string>("exercise", vm, opts);
 #define XXX(name, type)         \
     if (exercise == #name) {    \
         type(argc, argv).run(); \
@@ -49,9 +39,10 @@ int main(int argc, char** argv)
     }
         LEET_CODE_EXERCISES(XXX);
 #undef XXX
-        lcd::throw_logic_error("Missing/unsupported exercise: '{}'", exercise);
+        lcd::throw_invalid_argument("Unsupported exercise: '{}'", exercise);
 
     } catch (const bpo::options_description& opts) {
+        // Used for printing help/options information
         std::println(stderr, "{}", opts);
     } catch (const std::exception& ex) {
         std::println(stderr, "{}", ex.what());

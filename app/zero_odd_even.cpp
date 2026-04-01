@@ -1,4 +1,5 @@
 #include "zero_odd_even.hpp"
+#include "prog_opts.hpp"
 
 namespace lcd
 {
@@ -12,8 +13,17 @@ class zero_odd_even_impl
     std::binary_semaphore sem_print_even_{0};
 
 public:
-    // TODO
-    explicit zero_odd_even_impl(int, char**) : iterations_(5) {}
+    zero_odd_even_impl(int argc, char** argv)
+    {
+        bpo::options_description opts("Options for zero_odd_even");
+        lcd::add_opt(opts, "info,I", "Info about available options");
+        lcd::add_opt(opts, "count,C", bpo::value<uint16_t>(),
+                     "Count of 0-number pairs [0 - 65535]");
+
+        const auto vm = lcd::parse_opts(argc, argv, opts);
+
+        iterations_ = lcd::read_opt<uint16_t>("count", vm, opts);
+    }
 
     void run()
     {
