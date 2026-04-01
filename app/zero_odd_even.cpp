@@ -61,6 +61,8 @@ zero_odd_even::zero_odd_even(int argc, char** argv)
 {
 }
 
+zero_odd_even::~zero_odd_even() = default;
+
 void zero_odd_even::run()
 {
     impl_->run();

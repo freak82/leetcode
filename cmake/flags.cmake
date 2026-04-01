@@ -1,11 +1,11 @@
 
 add_library(flags_options INTERFACE)
 
-# Pick some better and more performant architecture
+# -fno-rtti is not used because it breaks the boost::any_cast conversion to
+# std::string.
 target_compile_options(flags_options
     INTERFACE
         -std=c++2c
-        -fno-rtti
         -march=native
         -Wall 
         -Wextra 

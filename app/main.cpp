@@ -35,7 +35,13 @@ int main(int argc, char** argv)
         bpo::store(bpo::parse_command_line(argc, argv, opts), vm);
         bpo::notify(vm);
 
-        const auto& exercise = vm["exercise"].as<std::string>();
+        // The separate exercise classes may throw such errors too when
+        // their expected options are not present.
+        if (vm.count("help")) throw opts;
+
+        std::string empty;
+        const auto& vmv      = vm["exercise"];
+        const auto& exercise = vmv.empty() ? empty : vmv.as<std::string>();
 #define XXX(name, type)         \
     if (exercise == #name) {    \
         type(argc, argv).run(); \
@@ -43,7 +49,7 @@ int main(int argc, char** argv)
     }
         LEET_CODE_EXERCISES(XXX);
 #undef XXX
-        lcd::throw_logic_error("Unsupported exercise: {}", exercise);
+        lcd::throw_logic_error("Missing/unsupported exercise: '{}'", exercise);
 
     } catch (const bpo::options_description& opts) {
         std::println(stderr, "{}", opts);
