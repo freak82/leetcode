@@ -1,6 +1,7 @@
 
 add_executable(leetcode
     main.cpp
+    fizzbuzz.cpp
     zero_odd_even.cpp
 )
 
