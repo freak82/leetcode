@@ -18,11 +18,14 @@ public:
         bpo::options_description opts("Options for zero_odd_even");
         lcd::add_opt(opts, "info,I", "Info about available options");
         lcd::add_opt(opts, "count,C", bpo::value<uint16_t>(),
-                     "Count of 0-number pairs [0 - 65535]");
+                     "Count of 0-number pairs [1 - 65535]");
 
         const auto vm = lcd::parse_opts(argc, argv, opts);
 
         iterations_ = lcd::read_opt<uint16_t>("count", vm, opts);
+        if (iterations_ == 0) {
+            lcd::throw_invalid_argument("'count' should be greater than 1");
+        }
     }
 
     void run()
