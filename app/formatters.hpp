@@ -14,8 +14,11 @@ concept stream_formattable = requires(std::ostream& os, const T& v) {
 
 } // namespace lcd
 ////////////////////////////////////////////////////////////////////////////////
+// The NOLINT cooment is needed because clang-tidy complains that the below
+// specialization may lead to UB because we use concept to constraint the
+// specialization and not user defined type.
 template <lcd::stream_formattable T>
-struct std::formatter<T> : std::formatter<std::string_view>
+struct std::formatter<T> : std::formatter<std::string_view> // NOLINT
 {
     auto format(const T& v, auto& ctx) const noexcept
     {

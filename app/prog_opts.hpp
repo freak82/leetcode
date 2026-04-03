@@ -31,7 +31,7 @@ parse_opts(int argc, char** argv, const bpo::options_description& opts)
                    .run(),
                vm);
     bpo::notify(vm);
-    if (vm.count("help") || vm.count("info")) throw opts;
+    if (vm.contains("help") || vm.contains("info")) throw opts;
     return vm;
 }
 
