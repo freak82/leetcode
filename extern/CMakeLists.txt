@@ -2,6 +2,7 @@ include(FetchContent)
 
 set(BOOST_ENABLE_CMAKE ON)
 set(BOOST_INCLUDE_LIBRARIES 
+    range
     program_options
 )
 

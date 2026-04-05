@@ -1,11 +1,13 @@
 #include "fizzbuzz.hpp"
+#include "dining_philosophers.hpp"
 #include "zero_odd_even.hpp"
 #include "prog_opts.hpp"
 #include "throw.hpp"
 
 // name type
-#define LEET_CODE_EXERCISES(MACRO) \
-    MACRO(fizzbuzz, lcd::fizzbuzz) \
+#define LEET_CODE_EXERCISES(MACRO)                       \
+    MACRO(fizzbuzz, lcd::fizzbuzz)                       \
+    MACRO(dining_philosophers, lcd::dining_philosophers) \
     MACRO(zero_odd_even, lcd::zero_odd_even)
 
 int main(int argc, char** argv)

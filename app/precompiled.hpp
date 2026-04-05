@@ -12,6 +12,7 @@
 #include <exception>
 #include <format>
 #include <memory>
+#include <mutex>
 #include <ostream>
 #include <print>
 #include <semaphore>
@@ -26,6 +27,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 /// boost headers
+#include <boost/range/irange.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/variables_map.hpp>
